@@ -11,7 +11,10 @@ import AVFoundation
 // This is implementation of AVAudioRecorder
 class AudioRecorderImpl1: AudioRecorder {
     
+    static let shared = AudioRecorderImpl1() // TODO: shouldn't be Singleton. Must be correctly injected into Use Cases in future
+    
     private var audioRecorder: AVAudioRecorder?
+    private var audioPlayer: AVAudioPlayer?
     private var fileUrl: URL?
     private var isPaused: Bool = false
     
@@ -30,10 +33,15 @@ class AudioRecorderImpl1: AudioRecorder {
                 guard let self = self else { return }
                 if success {
                     print("✅✅✅ Permission granted. Record starting...")
-                    do {
-                        try self.startRecord() // TODO: how to rethrow?
-                    } catch {
-                        print("❌❌❌ Record start failed: \(error)")
+                    Task {
+                        // We're in a scope of closure that's run on background so we need to start recording on main thread - demand of AVAudioRecorder
+                        await MainActor.run(body: {
+                            do {
+                                try self.startRecord() // TODO: how to rethrow?
+                            } catch {
+                                print("❌❌❌ Record start failed: \(error)")
+                            }
+                        })
                     }
                 } else {
                     print("❌❌❌ Access denied. Please, grant access in settings")
@@ -52,6 +60,20 @@ class AudioRecorderImpl1: AudioRecorder {
     
     func stopRecording() {
         audioRecorder?.stop()
+        audioRecorder = nil
+
+        guard let url = fileUrl else {
+            print("❌❌❌ Audio file url is nil.")
+            return
+        }
+        
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+            audioPlayer?.prepareToPlay()
+            audioPlayer?.play()
+        } catch {
+            print("❌❌❌ Player creation failed: \(error)")
+        }
     }
     
     // MARK: - Private
@@ -65,17 +87,23 @@ class AudioRecorderImpl1: AudioRecorder {
         
         let fileName = UUID().uuidString + "m4a"
         let fileUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(fileName)
-        
+        self.fileUrl = fileUrl
+
         let settings: [String: Any] = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-            AVSampleRateKey: 44_100,
-            AVNumberOfChannelsKey: 2,
+            AVSampleRateKey: 44100,
+            AVNumberOfChannelsKey: 1,
             AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
         ]
         
-        audioRecorder = try AVAudioRecorder(url: fileUrl, settings: settings)
-        audioRecorder?.prepareToRecord()
-        audioRecorder?.record()
+        do {
+            audioRecorder = try AVAudioRecorder(url: fileUrl, settings: settings)
+            audioRecorder?.prepareToRecord()
+            audioRecorder?.record()
+            print("✅✅✅ Recording started...")
+        } catch {
+            print("❌❌❌ Audio Recorder couldn't initialize: \(error)")
+        }
     }
     
 }

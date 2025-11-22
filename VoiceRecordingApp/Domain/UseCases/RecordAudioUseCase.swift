@@ -9,10 +9,10 @@ import Foundation
 
 struct RecordAudioUseCase {
     
-    private let audioRecorder: AudioRecorder? // TODO: inject
+    private let audioRecorder: AudioRecorder? = AudioRecorderImpl1.shared // TODO: inject
     
     init() {
-        audioRecorder = nil
+        
     }
     
     func recordAudio() throws {

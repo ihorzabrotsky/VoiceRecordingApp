@@ -8,7 +8,7 @@
 import Foundation
 
 struct PauseRecordingUseCase {
-    private var audioRecorder: AudioRecorder? // TODO: inject
+    private var audioRecorder: AudioRecorder? = AudioRecorderImpl1.shared // TODO: inject
     
     func pauseRecording() {
         audioRecorder?.pauseRecording()
