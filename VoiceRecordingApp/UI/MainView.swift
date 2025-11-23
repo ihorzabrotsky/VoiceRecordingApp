@@ -9,12 +9,12 @@ import Foundation
 import SwiftUI
 
 class MainViewModel: ObservableObject {
-    @Published var records: [Record] = []
+    @Published var records: [Recording] = []
     
-    func loadRecords() async -> [Record] {
-        return [Record(id: 0, text: "Record 111"),
-                Record(id: 1, text: "Record 222"),
-                Record(id: 2, text: "Record 333")]
+    func loadRecords() async -> [Recording] {
+        return [Recording(id: UUID(), title: "Record 111", duration: 2, date: Date()),
+                Recording(id: UUID(), title: "Record 222", duration: 2, date: Date()),
+                Recording(id: UUID(), title: "Record 333", duration: 2, date: Date())]
     }
 }
 
@@ -25,7 +25,7 @@ enum MainViewState {
 
 struct MainView: View {
     @State private var mainViewState: MainViewState = .recording
-    @State private var recordings: [Record] = []
+    @State private var recordings: [Recording] = []
     @StateObject private var viewModel = MainViewModel()
     
     var body: some View {
@@ -35,7 +35,7 @@ struct MainView: View {
                     Section("Recordings") {
                         ForEach(recordings, id: \.id) { rec in
                             NavigationLink(destination: PlaybackView()) {
-                                Text(rec.text)
+                                Text(rec.title)
                             }
                             .tag(rec)
                         }

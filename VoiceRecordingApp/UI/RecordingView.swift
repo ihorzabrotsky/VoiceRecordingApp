@@ -15,6 +15,7 @@ enum RecordingState: String {
     case idle = "Start recording"
 }
 
+@MainActor
 class RecordingViewModel: ObservableObject {
     
     private let recordAudioUseCase = RecordAudioUseCase()
@@ -44,8 +45,8 @@ class RecordingViewModel: ObservableObject {
         state = .paused
     }
     
-    func stopRecord() {
-        stopRecordingUseCase.stopRecording()
+    func stopRecord() async throws {
+        let recording = try await stopRecordingUseCase.stopRecording()
         state = .idle
         // remove timer
     }
@@ -86,7 +87,9 @@ struct RecordingView: View {
             if viewModel.state != .idle {
                 Button("Stop!") {
                     viewModel.state = .idle
-                    viewModel.stopRecord()
+                    Task {
+                        try await viewModel.stopRecord()
+                    }
                 }
                 .offset(y: 40)
             }

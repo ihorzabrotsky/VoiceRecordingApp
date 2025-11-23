@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct Record: Identifiable, Hashable {
-    let id: Int
-    let text: String
-//    let duration: Double
-//    let date: Date
+struct Recording: Identifiable, Hashable {
+    let id: UUID
+    let title: String
+    let duration: Double
+    let date: Date
 }

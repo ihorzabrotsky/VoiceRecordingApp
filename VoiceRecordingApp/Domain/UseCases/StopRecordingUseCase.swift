@@ -14,16 +14,24 @@ struct StopRecordingUseCase {
     
     // By User flow design the record must be automatically saved after "Stop".
     // This is behaviour for native Voice Memo (can be changed)
-    func stopRecording() {
-        audioRecorder?.stopRecording()
+    // ideally this method should throw if audio recording or saving failed
+    func stopRecording() async throws -> Recording {
+        // check if audioRecorder has recorder audio file and create business model
+        guard let recording = try audioRecorder?.stopRecording(),
+        let fileUrl = audioRecorder?.fileUrl else {
+            // must throw some AudioRecorderError
+            print("❌❌❌ Audio recording failed.")
+            throw AudioRecorderError.recordingFailed // TODO: This error belongs to Data layer and shouldn't be exposed.
+        }
         
-        Task {
-            do {
-                try await audioRepository?.saveRecord(/* RECORD */)
-                // update list
-            } catch {
-                print("❌ Save record failed")
-            }
+        // We need to save the recording and update the UI only in case of success
+        do {
+            try await audioRepository?.save(recording, fileUrl: fileUrl)
+            // update list: if success then we can just add 1 record on top of the list, we don't need to reload the whole list
+            return recording
+        } catch {
+            print("❌❌❌ Save record failed.")
+            throw AudioRecorderError.recordingFailed // TODO: This error belongs to Data layer and shouldn't be exposed.
         }
     }
 }

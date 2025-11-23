@@ -10,7 +10,10 @@ import Foundation
 protocol AudioRecorder {
     func startRecording() throws
     func pauseRecording()
-    func stopRecording()
+    // "stopRecording" doesn't reflect the fact that Recording will be returned but this is done atm to save time.
+    func stopRecording() throws -> Recording
+    
+    var fileUrl: URL? { get }
 }
 
 protocol AudioPlayer {
@@ -20,6 +23,6 @@ protocol AudioPlayer {
 }
 
 protocol AudioRepository {
-    func saveRecord() async throws
-    func loadRecords() async throws -> [Record]
+    func save(_ recording: Recording, fileUrl: URL) async throws
+    func loadRecords() async throws -> [Recording]
 }
