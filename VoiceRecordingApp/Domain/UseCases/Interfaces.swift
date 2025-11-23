@@ -23,6 +23,12 @@ protocol AudioPlayer {
 }
 
 protocol AudioRepository {
+    // Not sure about the need of exposing of URL to business layer. I think this should not be here.
+    // But AVAudioRecorder tied with URL for saving audio file.
+    // Maybe, it can also work without URL - need to investigate if have time.
     func save(_ recording: Recording, fileUrl: URL) async throws
     func loadRecords() async throws -> [Recording]
+    
+    // Need this method for playing
+    func getRecordingUrl(by id: UUID) -> URL? // should it throw?
 }

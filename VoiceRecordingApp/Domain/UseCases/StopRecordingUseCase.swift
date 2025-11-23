@@ -7,10 +7,9 @@
 
 import Foundation
 
-// We need to add Publisher for this use case and make it class because we also need to update Records List
 struct StopRecordingUseCase {
     private var audioRecorder: AudioRecorder? = AudioRecorderImpl1.shared // TODO: inject
-    private var audioRepository: AudioRepository? // TODO: inject
+    private var audioRepository: AudioRepository? = AudioRepositoryImpl.shared // TODO: inject
     
     // By User flow design the record must be automatically saved after "Stop".
     // This is behaviour for native Voice Memo (can be changed)

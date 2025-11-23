@@ -6,3 +6,19 @@
 //
 
 import Foundation
+
+enum ImportCachedError: Error {
+    case loadFailed
+}
+
+struct ImportCachedRecordingsUseCase {
+    private let audioRepository: AudioRepository? = AudioRepositoryImpl()
+    
+    func loadRecordings() async throws -> [Recording] {
+        guard let recordings = try await audioRepository?.loadRecords() else {
+            throw ImportCachedError.loadFailed
+        }
+        
+        return recordings.sorted { $0.date > $1.date } // we do sort our records from newest to oldest. This is business logic
+    }
+}

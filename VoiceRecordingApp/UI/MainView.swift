@@ -20,6 +20,7 @@ class MainViewModel: ObservableObject {
     private let recordAudioUseCase = RecordAudioUseCase()
     private let pauseRecordingUseCase = PauseRecordingUseCase()
     private let stopRecordingUseCase = StopRecordingUseCase()
+    private let importCachedRecordingsUseCase = ImportCachedRecordingsUseCase()
     
     @Published var records: [Recording] = []
     @Published var state: MainViewState = .idle
@@ -52,9 +53,11 @@ class MainViewModel: ObservableObject {
     }
     
     func loadRecords() async {
-        records = [Recording(id: UUID(), title: "Record 111", duration: 2, date: Date()),
-                   Recording(id: UUID(), title: "Record 222", duration: 2, date: Date()),
-                   Recording(id: UUID(), title: "Record 333", duration: 2, date: Date())]
+        do {
+            records = try await importCachedRecordingsUseCase.loadRecordings()
+        } catch {
+            print("❌❌❌ \(Self.self): loading list of saved recordings failed: \(error)")
+        }
     }
 }
 

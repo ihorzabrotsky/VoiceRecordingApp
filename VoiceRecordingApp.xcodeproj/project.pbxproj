@@ -28,6 +28,10 @@
 		A1AC51662ED091CF00E88ECA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A1AC51652ED091CF00E88ECA /* Info.plist */; };
 		A1AC51682ED0C9E700E88ECA /* Interfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC51672ED0C9E700E88ECA /* Interfaces.swift */; };
 		A1AC516A2ED0CE3900E88ECA /* SelectRecordUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC51692ED0CE3900E88ECA /* SelectRecordUseCase.swift */; };
+		A1AEABD42ED33E9600C43E0F /* AudioRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEABD32ED33E9600C43E0F /* AudioRepositoryImpl.swift */; };
+		A1AEABD72ED3403C00C43E0F /* RecordingDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEABD62ED3403C00C43E0F /* RecordingDTO.swift */; };
+		A1AEABDA2ED341F900C43E0F /* AudioRecordingModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A1AEABD82ED341F900C43E0F /* AudioRecordingModel.xcdatamodeld */; };
+		A1AEABE02ED344A200C43E0F /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEABDF2ED344A200C43E0F /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +77,10 @@
 		A1AC51652ED091CF00E88ECA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1AC51672ED0C9E700E88ECA /* Interfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interfaces.swift; sourceTree = "<group>"; };
 		A1AC51692ED0CE3900E88ECA /* SelectRecordUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRecordUseCase.swift; sourceTree = "<group>"; };
+		A1AEABD32ED33E9600C43E0F /* AudioRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRepositoryImpl.swift; sourceTree = "<group>"; };
+		A1AEABD62ED3403C00C43E0F /* RecordingDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingDTO.swift; sourceTree = "<group>"; };
+		A1AEABD92ED341F900C43E0F /* AudioRecordingModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AudioRecordingModel.xcdatamodel; sourceTree = "<group>"; };
+		A1AEABDF2ED344A200C43E0F /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +111,7 @@
 		A15485442ECF3104007E1ECF = {
 			isa = PBXGroup;
 			children = (
+				A1AEABD82ED341F900C43E0F /* AudioRecordingModel.xcdatamodeld */,
 				A1AC51652ED091CF00E88ECA /* Info.plist */,
 				A154854F2ECF3105007E1ECF /* VoiceRecordingApp */,
 				A15485612ECF3108007E1ECF /* VoiceRecordingAppTests */,
@@ -173,7 +182,10 @@
 		A154857D2ECF351B007E1ECF /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				A1AEABD52ED3402B00C43E0F /* DTOs */,
 				A1A1AE932ED1F0B000986A6B /* AudioRecorderImpl1.swift */,
+				A1AEABD32ED33E9600C43E0F /* AudioRepositoryImpl.swift */,
+				A1AEABDF2ED344A200C43E0F /* CoreDataManager.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -209,6 +221,14 @@
 				A1AC51692ED0CE3900E88ECA /* SelectRecordUseCase.swift */,
 			);
 			path = UseCases;
+			sourceTree = "<group>";
+		};
+		A1AEABD52ED3402B00C43E0F /* DTOs */ = {
+			isa = PBXGroup;
+			children = (
+				A1AEABD62ED3403C00C43E0F /* RecordingDTO.swift */,
+			);
+			path = DTOs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -350,10 +370,14 @@
 				A1AC51682ED0C9E700E88ECA /* Interfaces.swift in Sources */,
 				A15485802ECF5E7B007E1ECF /* Recording.swift in Sources */,
 				A15485942ECF6459007E1ECF /* SaveRecordingUseCase.swift in Sources */,
+				A1AEABD42ED33E9600C43E0F /* AudioRepositoryImpl.swift in Sources */,
 				A15485822ECF5F0A007E1ECF /* RecordingView.swift in Sources */,
 				A15485842ECF5F17007E1ECF /* PlaybackView.swift in Sources */,
+				A1AEABE02ED344A200C43E0F /* CoreDataManager.swift in Sources */,
+				A1AEABD72ED3403C00C43E0F /* RecordingDTO.swift in Sources */,
 				A15485512ECF3105007E1ECF /* VoiceRecordingAppApp.swift in Sources */,
 				A15485922ECF6448007E1ECF /* ImportCachedRecordingsUseCase.swift in Sources */,
+				A1AEABDA2ED341F900C43E0F /* AudioRecordingModel.xcdatamodeld in Sources */,
 				A1A1AE942ED1F0B000986A6B /* AudioRecorderImpl1.swift in Sources */,
 				A1AC516A2ED0CE3900E88ECA /* SelectRecordUseCase.swift in Sources */,
 				A154858E2ECF633F007E1ECF /* StopRecordingUseCase.swift in Sources */,
@@ -668,6 +692,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A1AEABD82ED341F900C43E0F /* AudioRecordingModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A1AEABD92ED341F900C43E0F /* AudioRecordingModel.xcdatamodel */,
+			);
+			currentVersion = A1AEABD92ED341F900C43E0F /* AudioRecordingModel.xcdatamodel */;
+			path = AudioRecordingModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = A15485452ECF3104007E1ECF /* Project object */;
 }
