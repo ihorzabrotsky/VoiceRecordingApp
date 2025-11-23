@@ -26,17 +26,29 @@ class MainViewModel: ObservableObject {
     
     func recordAudio() {
         state = .recording
-        // useCase record...
+        do {
+            try recordAudioUseCase.recordAudio()
+        } catch {
+            print("❌❌❌ \(Self.self): audio recording failed: \(error)")
+        }
     }
     
     func pauseRecord() {
         state = .paused
-        // useCase pause...
+        pauseRecordingUseCase.pauseRecording()
+        
     }
     
     func stopRecord() {
         state = .idle
-        // useCase stop...
+        Task {
+            do {
+                records.insert(try await stopRecordingUseCase.stopRecording(), at: 0)
+            } catch {
+                // TODO: here we need to handle error and show some error for the user. For this we should update MainViewState with some error state
+                print("❌❌❌ \(Self.self): audio recording stop failed, new Record wasn't added to List: \(error)")
+            }
+        }
     }
     
     func loadRecords() async {
