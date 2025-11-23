@@ -66,7 +66,6 @@ class MainViewModel: ObservableObject {
 // If user records audio atm -> List has to be blocked. We can show/hide it appropriately
 struct MainView: View {
     @State private var mainViewState: MainViewState = .recording
-//    @State private var recordings: [Recording] = []
     @StateObject private var viewModel = MainViewModel()
     
     var body: some View {
@@ -76,14 +75,24 @@ struct MainView: View {
                     Section("Recordings") {
                         ForEach(viewModel.records, id: \.id) { rec in
                             NavigationLink(destination: PlaybackView()) {
-                                Text(rec.title)
+                                VStack {
+                                    HStack {
+                                        Text(rec.title)
+                                            .font(.title2)
+                                        Spacer()
+                                    }
+                                    HStack {
+                                        Text(rec.date, format: .dateTime.day().month().year().hour().minute())
+                                        Spacer()
+                                    }
+                                }
                             }
                             .tag(rec)
                         }
                     }
                 }
                 .listStyle(.sidebar)
-                .frame(width: 200)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .task {
                     await viewModel.loadRecords()
                 }
