@@ -14,7 +14,7 @@ class AudioRecorderImpl1: AudioRecorder {
     static let shared = AudioRecorderImpl1() // TODO: shouldn't be Singleton. Must be correctly injected into Use Cases in future
     
     private var audioRecorder: AVAudioRecorder?
-    private var audioPlayer: AVAudioPlayer?
+    private var audioPlayer: AVAudioPlayer? // TODO: remove from here
     private var fileUrl: URL?
     private var isPaused: Bool = false
     
