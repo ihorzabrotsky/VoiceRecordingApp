@@ -62,11 +62,15 @@ class AudioRecorderImpl1: AudioRecorder {
     }
     
     func stopRecording() throws -> Recording {
-        audioRecorder?.stop()
-        
+        // Duration can be correctly obtained only before AVAudioRecorder().stop()
         guard let duration = audioRecorder?.currentTime else {
+            audioRecorder?.stop()
             throw AudioRecorderError.recordingFailed
         }
+               
+        audioRecorder?.stop()
+        
+        print("⚠️⚠️⚠️ Record duration: \(duration)")
         
         audioRecorder = nil
 
