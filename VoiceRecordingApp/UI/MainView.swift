@@ -21,9 +21,11 @@ class MainViewModel: ObservableObject {
     private let pauseRecordingUseCase = PauseRecordingUseCase()
     private let stopRecordingUseCase = StopRecordingUseCase()
     private let importCachedRecordingsUseCase = ImportCachedRecordingsUseCase()
+    private let selectRecordUseCase = SelectRecordUseCase()
     
     @Published var records: [Recording] = []
     @Published var state: MainViewState = .idle
+    @Published var selection: UUID?
     
     func recordAudio() {
         state = .recording
@@ -59,6 +61,11 @@ class MainViewModel: ObservableObject {
             print("❌❌❌ \(Self.self): loading list of saved recordings failed: \(error)")
         }
     }
+    
+    func select(recording: Recording) {
+        selection = recording.id
+        print("⚠️⚠️⚠️ Just tapped on Recording")
+    }
 }
 
 // TODO
@@ -71,10 +78,10 @@ struct MainView: View {
     var body: some View {
         VStack {
             NavigationView {
-                List {
+                List(selection: $viewModel.selection) {
                     Section("Recordings") {
                         ForEach(viewModel.records, id: \.id) { rec in
-                            NavigationLink(destination: PlaybackView()) {
+                            NavigationLink(destination: PlaybackView(), tag: rec.id, selection: $viewModel.selection) {
                                 VStack {
                                     HStack {
                                         Text(rec.title)
@@ -85,9 +92,16 @@ struct MainView: View {
                                         Text(rec.date, format: .dateTime.day().month().year().hour().minute())
                                         Spacer()
                                     }
+                                    HStack {
+                                        Text("\(Int(rec.duration)/60)m \(Int(rec.duration) - Int(rec.duration/60)*60)s")
+                                        Spacer()
+                                    }
+                                }
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    viewModel.select(recording: rec)
                                 }
                             }
-                            .tag(rec)
                         }
                     }
                 }

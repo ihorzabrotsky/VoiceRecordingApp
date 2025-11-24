@@ -9,17 +9,22 @@ import Foundation
 import SwiftUI
 import Combine
 
-class PlaybackViewModel: ObservableObject {
-    
-}
-
 enum PlaybackViewState {
     case idle
     case playing
     case paused
 }
 
+final class PlaybackViewModel: ObservableObject {
+    @Published var state: PlaybackViewState = .idle
+    
+//    private let 
+    
+}
+
 struct PlaybackView: View {
+    @StateObject private var viewModel = PlaybackViewModel()
+    
     var body: some View {
         Text("Playback View")
     }

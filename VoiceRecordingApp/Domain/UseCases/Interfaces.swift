@@ -17,9 +17,9 @@ protocol AudioRecorder {
 }
 
 protocol AudioPlayer {
-    func playRecord()
-    func pauseRecord()
-    func stopRecord()
+    func playRecord(by url: URL)
+    func pausePlaying()
+    func stopPlaying()
 }
 
 protocol AudioRepository {

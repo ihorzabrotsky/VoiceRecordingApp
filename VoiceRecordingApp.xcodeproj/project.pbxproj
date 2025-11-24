@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A114FB6F2ED3769F008E08F8 /* PausePlayingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114FB6E2ED3769F008E08F8 /* PausePlayingUseCase.swift */; };
+		A114FB712ED376F6008E08F8 /* AudioPlayerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114FB702ED376F6008E08F8 /* AudioPlayerImpl.swift */; };
 		A15485512ECF3105007E1ECF /* VoiceRecordingAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15485502ECF3105007E1ECF /* VoiceRecordingAppApp.swift */; };
 		A15485532ECF3105007E1ECF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15485522ECF3105007E1ECF /* ContentView.swift */; };
 		A15485552ECF3108007E1ECF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A15485542ECF3108007E1ECF /* Assets.xcassets */; };
@@ -52,6 +54,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A114FB6E2ED3769F008E08F8 /* PausePlayingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PausePlayingUseCase.swift; sourceTree = "<group>"; };
+		A114FB702ED376F6008E08F8 /* AudioPlayerImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerImpl.swift; sourceTree = "<group>"; };
 		A154854D2ECF3105007E1ECF /* VoiceRecordingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceRecordingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A15485502ECF3105007E1ECF /* VoiceRecordingAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecordingAppApp.swift; sourceTree = "<group>"; };
 		A15485522ECF3105007E1ECF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -186,6 +190,7 @@
 				A1A1AE932ED1F0B000986A6B /* AudioRecorderImpl1.swift */,
 				A1AEABD32ED33E9600C43E0F /* AudioRepositoryImpl.swift */,
 				A1AEABDF2ED344A200C43E0F /* CoreDataManager.swift */,
+				A114FB702ED376F6008E08F8 /* AudioPlayerImpl.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -219,6 +224,7 @@
 				A15485932ECF6459007E1ECF /* SaveRecordingUseCase.swift */,
 				A1AC51672ED0C9E700E88ECA /* Interfaces.swift */,
 				A1AC51692ED0CE3900E88ECA /* SelectRecordUseCase.swift */,
+				A114FB6E2ED3769F008E08F8 /* PausePlayingUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -372,6 +378,7 @@
 				A15485942ECF6459007E1ECF /* SaveRecordingUseCase.swift in Sources */,
 				A1AEABD42ED33E9600C43E0F /* AudioRepositoryImpl.swift in Sources */,
 				A15485822ECF5F0A007E1ECF /* RecordingView.swift in Sources */,
+				A114FB712ED376F6008E08F8 /* AudioPlayerImpl.swift in Sources */,
 				A15485842ECF5F17007E1ECF /* PlaybackView.swift in Sources */,
 				A1AEABE02ED344A200C43E0F /* CoreDataManager.swift in Sources */,
 				A1AEABD72ED3403C00C43E0F /* RecordingDTO.swift in Sources */,
@@ -381,6 +388,7 @@
 				A1A1AE942ED1F0B000986A6B /* AudioRecorderImpl1.swift in Sources */,
 				A1AC516A2ED0CE3900E88ECA /* SelectRecordUseCase.swift in Sources */,
 				A154858E2ECF633F007E1ECF /* StopRecordingUseCase.swift in Sources */,
+				A114FB6F2ED3769F008E08F8 /* PausePlayingUseCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

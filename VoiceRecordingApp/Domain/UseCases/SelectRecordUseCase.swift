@@ -11,7 +11,7 @@ import Foundation
 /// 1. Item in List must be selected
 /// 2. PlaybackView must be shown to play this record
 struct SelectRecordUseCase {
-    func selectRecord(number: Int) {
-        // TODO: implement selecting record from list
+    func select(_ recording: Recording) {
+        
     }
 }
