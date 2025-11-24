@@ -25,7 +25,7 @@ class MainViewModel: ObservableObject {
     
     @Published var records: [Recording] = []
     @Published var state: MainViewState = .idle
-    @Published var selection: UUID?
+    @Published var selection: UUID? // need this to properly customize List item selection
     
     func recordAudio() {
         state = .recording
