@@ -97,6 +97,7 @@ struct MainView: View {
                                         Text("\((Int(rec.duration)/60).formatted(.number.precision(.integerLength(1...2))))m \((Int(rec.duration) - Int(rec.duration/60)*60).formatted(.number.precision(.integerLength(1...2))))s")
                                         Spacer()
                                     }
+                                    Divider()
                                 }
                                 .contentShape(Rectangle())
                                 .onTapGesture {
