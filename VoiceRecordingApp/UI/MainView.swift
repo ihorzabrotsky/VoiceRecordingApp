@@ -93,7 +93,8 @@ struct MainView: View {
                                         Spacer()
                                     }
                                     HStack {
-                                        Text("\(Int(rec.duration)/60)m \(Int(rec.duration) - Int(rec.duration/60)*60)s")
+                                        // TODO: move to viewModel
+                                        Text("\((Int(rec.duration)/60).formatted(.number.precision(.integerLength(1...2))))m \((Int(rec.duration) - Int(rec.duration/60)*60).formatted(.number.precision(.integerLength(1...2))))s")
                                         Spacer()
                                     }
                                 }
