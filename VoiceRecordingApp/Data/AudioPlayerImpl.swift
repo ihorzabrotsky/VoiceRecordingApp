@@ -9,16 +9,29 @@ import Foundation
 import AVFoundation
 
 // TODO: Don't forget to handle pausing correctly
-final class AudioPlayerImpl: AudioPlayer {
+final class AudioPlayerImpl: NSObject, AudioPlayer, AVAudioPlayerDelegate {
     
-    static let shared = AudioPlayerImpl() // TODO: This shuldn't be Singleton. Need proper DI. Left for now.
     private var player: AVAudioPlayer?
     private var isPlaying: Bool = false // or isPaused?
     
+    static let shared = AudioPlayerImpl() // TODO: This shouldn't be Singleton. Need proper DI. Left for now.
+    var activeRecordingUrl: URL?
+    
+    // MARK: - AudioPlayer
+    
     // Formally, this method should also throw. Left for now
-    func playRecord(by url: URL) {
+    func playRecord() {
+        guard let url = activeRecordingUrl else {
+            print("❌❌❌ No active Recording found.")
+            return
+        }
+        
+        print("⚠️⚠️⚠️ 222 Active recording URL: \(url.absoluteString)")
+        
         do {
-            player? = try AVAudioPlayer(contentsOf: url)
+            player = try AVAudioPlayer(contentsOf: url)
+            player?.delegate = self
+            print("⚠️⚠️⚠️ Audio file's duration: \(player?.duration)")
             player?.prepareToPlay()
             player?.play()
         } catch {
@@ -35,5 +48,16 @@ final class AudioPlayerImpl: AudioPlayer {
     func stopPlaying() {
         player?.stop()
         player = nil
+    }
+    
+    func setActiveRecordingURL(_ url: URL) {
+        activeRecordingUrl = url
+    }
+    
+    // MARK: - AVAudioPlayerDelegate
+    
+    // AVAudioPlayer did finish playing
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        
     }
 }

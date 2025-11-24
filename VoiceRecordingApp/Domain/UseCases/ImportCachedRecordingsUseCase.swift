@@ -12,7 +12,7 @@ enum ImportCachedError: Error {
 }
 
 struct ImportCachedRecordingsUseCase {
-    private let audioRepository: AudioRepository? = AudioRepositoryImpl()
+    private let audioRepository: AudioRepository? = AudioRepositoryImpl.shared
     
     func loadRecordings() async throws -> [Recording] {
         guard let recordings = try await audioRepository?.loadRecords() else {

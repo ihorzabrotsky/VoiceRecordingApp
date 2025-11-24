@@ -20,6 +20,7 @@ class AudioRecorderImpl1: AudioRecorder {
     private var audioPlayer: AVAudioPlayer? // TODO: remove from here
     var fileUrl: URL?
     private var isPaused: Bool = false
+    private var audioRecordingID: UUID?
     
     func startRecording() throws {
         let status = AVCaptureDevice.authorizationStatus(for: .audio)
@@ -63,22 +64,24 @@ class AudioRecorderImpl1: AudioRecorder {
     
     func stopRecording() throws -> Recording {
         // Duration can be correctly obtained only before AVAudioRecorder().stop()
-        guard let duration = audioRecorder?.currentTime else {
+        guard let duration = audioRecorder?.currentTime,
+              let id = audioRecordingID else {
             audioRecorder?.stop()
             throw AudioRecorderError.recordingFailed
         }
                
         audioRecorder?.stop()
+        audioRecorder = nil
+        audioRecordingID = nil
         
         print("⚠️⚠️⚠️ Record duration: \(duration)")
         
-        audioRecorder = nil
-
         guard let url = fileUrl else {
             print("❌❌❌ Audio file url is nil.")
             throw AudioRecorderError.recordingFailed
         }
 
+        print("⚠️⚠️⚠️ Recorded URL: \(url.absoluteString)")
         
         // TODO: Playing here for testing. Will be removed
         do {
@@ -89,7 +92,6 @@ class AudioRecorderImpl1: AudioRecorder {
             print("❌❌❌ Player creation failed: \(error)")
         }
         
-        let id = UUID()
         return Recording(id: id, title: id.uuidString, duration: duration, date: Date())
     }
     
@@ -102,8 +104,10 @@ class AudioRecorderImpl1: AudioRecorder {
             return
         }
         
+        let uuid = UUID()
+        audioRecordingID = uuid
         // TODO: good to have some enum for audio file's type (MP3, M4A, WAV)
-        let fileName = UUID().uuidString + "m4a"
+        let fileName = uuid.uuidString + "m4a"
         // TODO: FileManager shouldn't be here.
         // It would be better to just give away the audio file and Repository itself should manager FileManager or whatever else
         let fileUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(fileName)

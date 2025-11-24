@@ -64,6 +64,7 @@ class MainViewModel: ObservableObject {
     
     func select(recording: Recording) {
         selection = recording.id
+        selectRecordUseCase.select(recording)
         print("⚠️⚠️⚠️ Just tapped on Recording")
     }
 }

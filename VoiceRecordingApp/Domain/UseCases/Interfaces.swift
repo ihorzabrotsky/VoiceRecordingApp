@@ -17,9 +17,11 @@ protocol AudioRecorder {
 }
 
 protocol AudioPlayer {
-    func playRecord(by url: URL)
+    func playRecord()
     func pausePlaying()
     func stopPlaying()
+    // TODO: we can work only with Data type for recordings. Would be good to refactor so AudioPlayer and AudioRecorder don't know about URLs at all
+    func setActiveRecordingURL(_ url: URL)
 }
 
 protocol AudioRepository {

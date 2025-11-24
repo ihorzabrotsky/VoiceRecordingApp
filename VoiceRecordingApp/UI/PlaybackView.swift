@@ -15,12 +15,25 @@ enum PlaybackViewState: String {
     case paused = "Resume"
 }
 
+@MainActor
 final class PlaybackViewModel: ObservableObject {
     @Published var state: PlaybackViewState = .idle
     
     private let playRecordingUseCase = PlayRecordingUseCase()
+    private let pausePlayingUseCase = PausePlayingUseCase()
+    private let stopPlayingUseCase = StopPlayingUseCase()
     
+    func playRecording() {
+        playRecordingUseCase.play()
+    }
     
+    func pausePlaying() {
+        pausePlayingUseCase.pausePlaying()
+    }
+    
+    func stopPlaying() {
+        stopPlayingUseCase.stopPlaying()
+    }
 }
 
 struct PlaybackView: View {
@@ -36,12 +49,15 @@ struct PlaybackView: View {
                     switch viewModel.state {
                     case .idle:
                         viewModel.state = .playing
+                        viewModel.playRecording()
                         
                     case .playing:
                         viewModel.state = .paused
+                        viewModel.pausePlaying()
                         
                     case .paused:
                         viewModel.state = .playing
+                        viewModel.playRecording()
                     }
                     print("Play/Pause pressed")
                 }

@@ -27,12 +27,8 @@ final class CoreDataManager {
     }
     
     // TODO: need to throw and handle errors in future
-    func saveContext() {
+    func saveContext() throws {
         guard context.hasChanges else { return }
-        do {
-            try context.save()
-        } catch {
-            print("❌❌❌ Saving NSManagedObjectContext failed: \(error)")
-        }
+        try context.save()
     }
 }

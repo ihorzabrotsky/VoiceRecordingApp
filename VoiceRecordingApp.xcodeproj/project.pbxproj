@@ -34,6 +34,7 @@
 		A1AEABD72ED3403C00C43E0F /* RecordingDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEABD62ED3403C00C43E0F /* RecordingDTO.swift */; };
 		A1AEABDA2ED341F900C43E0F /* AudioRecordingModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A1AEABD82ED341F900C43E0F /* AudioRecordingModel.xcdatamodeld */; };
 		A1AEABE02ED344A200C43E0F /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEABDF2ED344A200C43E0F /* CoreDataManager.swift */; };
+		A1B984D82ED4B19400FAF5A9 /* StopPlayingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B984D72ED4B19400FAF5A9 /* StopPlayingUseCase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		A1AEABD62ED3403C00C43E0F /* RecordingDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingDTO.swift; sourceTree = "<group>"; };
 		A1AEABD92ED341F900C43E0F /* AudioRecordingModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AudioRecordingModel.xcdatamodel; sourceTree = "<group>"; };
 		A1AEABDF2ED344A200C43E0F /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		A1B984D72ED4B19400FAF5A9 /* StopPlayingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopPlayingUseCase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +227,7 @@
 				A1AC51672ED0C9E700E88ECA /* Interfaces.swift */,
 				A1AC51692ED0CE3900E88ECA /* SelectRecordUseCase.swift */,
 				A114FB6E2ED3769F008E08F8 /* PausePlayingUseCase.swift */,
+				A1B984D72ED4B19400FAF5A9 /* StopPlayingUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -376,6 +379,7 @@
 				A1AC51682ED0C9E700E88ECA /* Interfaces.swift in Sources */,
 				A15485802ECF5E7B007E1ECF /* Recording.swift in Sources */,
 				A15485942ECF6459007E1ECF /* SaveRecordingUseCase.swift in Sources */,
+				A1B984D82ED4B19400FAF5A9 /* StopPlayingUseCase.swift in Sources */,
 				A1AEABD42ED33E9600C43E0F /* AudioRepositoryImpl.swift in Sources */,
 				A15485822ECF5F0A007E1ECF /* RecordingView.swift in Sources */,
 				A114FB712ED376F6008E08F8 /* AudioPlayerImpl.swift in Sources */,

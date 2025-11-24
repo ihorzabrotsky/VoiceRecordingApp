@@ -20,7 +20,7 @@ struct PlayRecordingUseCase {
     // Selecting a Record from the List is Use Case itself
     // so
     // it must be handled separately - we just need to remember the record we pressed
-    func play(_ record: Recording) {
-        
+    func play() {
+        player.playRecord()
     }
 }

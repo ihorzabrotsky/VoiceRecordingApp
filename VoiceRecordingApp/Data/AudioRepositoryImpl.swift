@@ -10,6 +10,10 @@ import CoreData
 
 final class AudioRepositoryImpl: AudioRepository {
     
+    // TODO: we can have a problem of bad syncing of cachedRecordings and those from CoreData. Need to think about that.
+    // This array is needed to avoid constant CoreData reloads when we search for a recording with a specific ID
+    private var cachedRecordings: [RecordingDTO] = []
+    
     static let shared = AudioRepositoryImpl() // TODO: shouldn't be Singleton. Need proper DI in future
     
     func save(_ recording: Recording, fileUrl: URL) async throws {
@@ -24,7 +28,8 @@ final class AudioRepositoryImpl: AudioRepository {
         entity.url = recordingDTO.url
         
         print("Saving entity with id: \(recordingDTO.id)")
-        CoreDataManager.shared.saveContext()
+        try CoreDataManager.shared.saveContext()
+        cachedRecordings.append(recordingDTO) // append local cache with recordingDTO
     }
     
     func loadRecords() async throws -> [Recording] {
@@ -34,7 +39,7 @@ final class AudioRepositoryImpl: AudioRepository {
         do {
             let results = try context.fetch(request)
             print("✅✅✅ Results from CoreData: \(results)")
-            let recordings = results.compactMap { entity -> Recording? in
+            let recordingDTOs = results.compactMap { entity -> RecordingDTO? in
                 guard let id = entity.id,
                       let url = entity.url,
                       let title = entity.title,
@@ -44,10 +49,10 @@ final class AudioRepositoryImpl: AudioRepository {
                                     duration: entity.duration,
                                     date: date,
                                     url: url)
-                .convertToRecording()
             }
-            print("✅✅✅ Recordings loaded successfully: \(recordings)")
-            return recordings
+            print("✅✅✅ RecordingDTOs loaded successfully: \(recordingDTOs)")
+            cachedRecordings = recordingDTOs
+            return recordingDTOs.map { $0.convertToRecording() }
         } catch {
             print("❌❌❌ Error loading recordings from CoreData: \(error)")
             return [] // TODO: need to throw
@@ -55,7 +60,9 @@ final class AudioRepositoryImpl: AudioRepository {
     }
     
     func getRecordingUrl(by id: UUID) -> URL? {
-        nil // TODO: implement
+        cachedRecordings.first(where: { recordingDTO in
+            recordingDTO.id == id
+        })?.url
     }
     
 }
