@@ -102,7 +102,10 @@ class AudioRecorderImpl1: AudioRecorder {
             return
         }
         
+        // TODO: good to have some enum for audio file's type (MP3, M4A, WAV)
         let fileName = UUID().uuidString + "m4a"
+        // TODO: FileManager shouldn't be here.
+        // It would be better to just give away the audio file and Repository itself should manager FileManager or whatever else
         let fileUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(fileName)
         self.fileUrl = fileUrl
 
