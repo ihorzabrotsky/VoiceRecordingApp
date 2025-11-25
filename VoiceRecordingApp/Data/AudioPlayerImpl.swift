@@ -11,7 +11,7 @@ import AVFoundation
 // TODO: Don't forget to handle pausing correctly
 final class AudioPlayerImpl: NSObject, AudioPlayer {
     private var player: AVAudioPlayer?
-    private var isPlaying: Bool = false // or isPaused?
+    private var isPaused: Bool = false
     fileprivate var onStopCompletion: OnStopCompletion?
     
     static let shared = AudioPlayerImpl() // TODO: This shouldn't be Singleton. Need proper DI. Left for now.
@@ -19,8 +19,15 @@ final class AudioPlayerImpl: NSObject, AudioPlayer {
     
     // MARK: - AudioPlayer
     
-    // Formally, this method should also throw. Left for now
+    // TODO: Formally, this method should also throw. Left for now
+    // TODO: AVAudioPlayer.play() method returns Bool for success so it would be good to refactor appropriately.
     func playRecord(_ onStopCompletion: @escaping OnStopCompletion) {
+        guard !isPaused else {
+            isPaused = false
+            player?.play()
+            return
+        }
+        
         guard let url = activeRecordingUrl else {
             print("❌❌❌ No active Recording found.")
             return
@@ -48,9 +55,11 @@ final class AudioPlayerImpl: NSObject, AudioPlayer {
     // Play/Pause functionality
     func pausePlaying() {
         player?.pause()
+        isPaused = true
     }
     
     func stopPlaying() {
+        isPaused = false
         player?.stop()
         player = nil
         onStopCompletion?(true)
