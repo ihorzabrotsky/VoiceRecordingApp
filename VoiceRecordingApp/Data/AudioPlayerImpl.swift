@@ -26,12 +26,16 @@ final class AudioPlayerImpl: NSObject, AudioPlayer, AVAudioPlayerDelegate {
             return
         }
         
-        print("⚠️⚠️⚠️ 222 Active recording URL: \(url.absoluteString)")
+        print("⚠️⚠️⚠️ \(Self.self) Active recording URL: \(url.absoluteString)")
         
         do {
             player = try AVAudioPlayer(contentsOf: url)
             player?.delegate = self
-            print("⚠️⚠️⚠️ Audio file's duration: \(player?.duration)")
+            guard let duration = player?.duration else {
+                print("❌❌❌ \(Self.self) Duration is nil.")
+                return
+            }
+            print("⚠️⚠️⚠️ Audio file's duration: \(duration)")
             player?.prepareToPlay()
             player?.play()
         } catch {
