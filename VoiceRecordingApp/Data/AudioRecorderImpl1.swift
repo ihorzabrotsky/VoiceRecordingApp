@@ -17,7 +17,6 @@ class AudioRecorderImpl1: AudioRecorder {
     static let shared = AudioRecorderImpl1() // TODO: shouldn't be Singleton. Must be correctly injected into Use Cases in future
     
     private var audioRecorder: AVAudioRecorder?
-    private var audioPlayer: AVAudioPlayer? // TODO: remove from here
     var fileUrl: URL?
     private var isPaused: Bool = false
     private var audioRecordingID: UUID?
@@ -72,22 +71,6 @@ class AudioRecorderImpl1: AudioRecorder {
         audioRecordingID = nil
         
         print("⚠️⚠️⚠️ Record duration: \(duration)")
-        
-        guard let url = fileUrl else {
-            print("❌❌❌ Audio file url is nil.")
-            throw AudioRecorderError.recordingFailed
-        }
-
-        print("⚠️⚠️⚠️ Recorded URL: \(url.absoluteString)")
-        
-        // TODO: Playing here for testing. Will be removed
-        do {
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer?.prepareToPlay()
-            audioPlayer?.play()
-        } catch {
-            print("❌❌❌ Player creation failed: \(error)")
-        }
         
         return Recording(id: id, title: id.uuidString, duration: duration, date: Date())
     }
