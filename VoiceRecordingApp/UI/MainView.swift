@@ -39,7 +39,6 @@ class MainViewModel: ObservableObject {
     func pauseRecord() {
         state = .paused
         pauseRecordingUseCase.pauseRecording()
-        
     }
     
     func stopRecord() {
@@ -124,6 +123,7 @@ struct MainView: View {
             }
             .navigationViewStyle(.columns)
             
+            // This is actual RecordingView
             HStack {
                 Group {
                     let title = viewModel.state.rawValue

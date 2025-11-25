@@ -35,20 +35,17 @@ class AudioRecorderImpl1: AudioRecorder {
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .audio) { [weak self] success in
                 guard let self = self else { return }
-                if success {
-                    print("✅✅✅ Permission granted. Record starting...")
-                    Task {
-                        // We're in a scope of closure that's run on background so we need to start recording on main thread - demand of AVAudioRecorder
-                        await MainActor.run {
-                            do {
-                                try self.startRecord() // TODO: how to rethrow?
-                            } catch {
-                                print("❌❌❌ Record start failed: \(error)")
-                            }
-                        }
-                    }
-                } else {
+                guard success else {
                     print("❌❌❌ Access denied. Please, grant access in settings")
+                    return
+                }
+                
+                print("✅✅✅ Permission granted. Record starting...")
+                Task {
+                    // We're in a scope of closure that's run on background so we need to start recording on main thread - demand of AVAudioRecorder
+                    try await MainActor.run { // MainActor.run(...) rethrows
+                        try self.startRecord()
+                    }
                 }
             }
             
