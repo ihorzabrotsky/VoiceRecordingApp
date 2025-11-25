@@ -9,10 +9,10 @@ import Foundation
 import AVFoundation
 
 // TODO: Don't forget to handle pausing correctly
-final class AudioPlayerImpl: NSObject, AudioPlayer, AVAudioPlayerDelegate {
-    
+final class AudioPlayerImpl: NSObject, AudioPlayer {
     private var player: AVAudioPlayer?
     private var isPlaying: Bool = false // or isPaused?
+    fileprivate var onStopCompletion: OnStopCompletion?
     
     static let shared = AudioPlayerImpl() // TODO: This shouldn't be Singleton. Need proper DI. Left for now.
     var activeRecordingUrl: URL?
@@ -20,7 +20,7 @@ final class AudioPlayerImpl: NSObject, AudioPlayer, AVAudioPlayerDelegate {
     // MARK: - AudioPlayer
     
     // Formally, this method should also throw. Left for now
-    func playRecord() {
+    func playRecord(_ onStopCompletion: @escaping OnStopCompletion) {
         guard let url = activeRecordingUrl else {
             print("❌❌❌ No active Recording found.")
             return
@@ -36,6 +36,7 @@ final class AudioPlayerImpl: NSObject, AudioPlayer, AVAudioPlayerDelegate {
                 return
             }
             print("⚠️⚠️⚠️ Audio file's duration: \(duration)")
+            self.onStopCompletion = onStopCompletion
             player?.prepareToPlay()
             player?.play()
         } catch {
@@ -52,16 +53,22 @@ final class AudioPlayerImpl: NSObject, AudioPlayer, AVAudioPlayerDelegate {
     func stopPlaying() {
         player?.stop()
         player = nil
+        onStopCompletion?(true)
+        onStopCompletion = nil
     }
     
     func setActiveRecordingURL(_ url: URL) {
         activeRecordingUrl = url
     }
-    
-    // MARK: - AVAudioPlayerDelegate
-    
-    // AVAudioPlayer did finish playing
+}
+
+// MARK: - AVAudioPlayerDelegate
+
+extension AudioPlayerImpl: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        
+        // ping UI that player finished playing
+        print("✅✅✅ AVAudioPlayer finished playing successfully.")
+        onStopCompletion?(flag)
+        onStopCompletion = nil
     }
 }

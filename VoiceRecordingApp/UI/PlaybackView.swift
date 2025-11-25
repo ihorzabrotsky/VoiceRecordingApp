@@ -24,10 +24,20 @@ final class PlaybackViewModel: ObservableObject {
     private let stopPlayingUseCase = StopPlayingUseCase()
     
     func playRecording() {
-        playRecordingUseCase.play()
+        state = .playing
+        playRecordingUseCase.play { [weak self] success in
+            if !success {
+                // show error
+            }
+            
+            // Let's change the state independently from success for now
+            guard let self = self else { return }
+            self.state = .idle
+        }
     }
     
     func pausePlaying() {
+        state = .paused
         pausePlayingUseCase.pausePlaying()
     }
     
@@ -48,15 +58,12 @@ struct PlaybackView: View {
                 Button("\(viewModel.state.rawValue)") {
                     switch viewModel.state {
                     case .idle:
-                        viewModel.state = .playing
                         viewModel.playRecording()
                         
                     case .playing:
-                        viewModel.state = .paused
                         viewModel.pausePlaying()
                         
                     case .paused:
-                        viewModel.state = .playing
                         viewModel.playRecording()
                     }
                     print("Play/Pause pressed")
@@ -68,7 +75,7 @@ struct PlaybackView: View {
                 // Stop button
                 if viewModel.state != .idle {
                     Button("Stop") {
-                        viewModel.state = .idle
+                        viewModel.stopPlaying()
                         print("Stop button pressed")
                     }
                     .frame(width: 50, height: 50)

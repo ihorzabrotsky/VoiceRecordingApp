@@ -8,7 +8,7 @@
 import Foundation
 
 struct StopPlayingUseCase {
-    private let audioPlayer: AudioPlayer? = AudioPlayerImpl() // TODO: Shouldn't be Singleton. Proper DI needed.
+    private let audioPlayer: AudioPlayer? = AudioPlayerImpl.shared // TODO: Shouldn't be Singleton. Proper DI needed.
     
     func stopPlaying() {
         audioPlayer?.stopPlaying()

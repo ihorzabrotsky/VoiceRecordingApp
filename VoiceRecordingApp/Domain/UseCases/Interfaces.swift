@@ -17,7 +17,9 @@ protocol AudioRecorder {
 }
 
 protocol AudioPlayer {
-    func playRecord()
+    typealias OnStopCompletion = (Bool) -> Void
+    
+    func playRecord(_ onStopCompletion: @escaping OnStopCompletion)
     func pausePlaying()
     func stopPlaying()
     // TODO: we can work only with Data type for recordings. Would be good to refactor so AudioPlayer and AudioRecorder don't know about URLs at all
