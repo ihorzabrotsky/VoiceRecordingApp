@@ -8,7 +8,6 @@
 import Foundation
 import AVFoundation
 
-// TODO: Don't forget to handle pausing correctly
 final class AudioPlayerImpl: NSObject, AudioPlayer {
     private var player: AVAudioPlayer?
     private var isPaused: Bool = false
