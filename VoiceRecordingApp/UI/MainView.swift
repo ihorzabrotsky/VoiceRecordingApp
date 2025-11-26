@@ -131,7 +131,7 @@ struct MainView: View {
             HStack {
                 Group {
                     let title = viewModel.state.rawValue
-                    Button(title) {
+                    Button {
                         switch viewModel.state {
                         case .idle:
                             viewModel.recordAudio()
@@ -142,9 +142,15 @@ struct MainView: View {
                         case .paused:
                             viewModel.recordAudio()
                         }
+                    } label: {
+                        Text(title)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     .frame(width: 120, height: 50)
+                    .buttonStyle(BorderlessButtonStyle())
                     .background(.red)
+                    .contentShape(Rectangle())
                     
                     if viewModel.state != .idle {
                         HStack {
