@@ -55,7 +55,7 @@ struct PlaybackView: View {
             
             HStack {
                 // Play/Pause button
-                Button("\(viewModel.state.rawValue)") {
+                Button {
                     switch viewModel.state {
                     case .idle:
                         viewModel.playRecording()
@@ -67,21 +67,30 @@ struct PlaybackView: View {
                         viewModel.playRecording()
                     }
                     print("Play/Pause pressed")
+                } label: {
+                    Text("\(viewModel.state.rawValue)")
+                        .frame(width: 70, height: 70)
                 }
-                .frame(width: 50, height: 50)
-                
+                .buttonStyle(.plain)
+                .background(.yellow)
+                                
                 Spacer()
                 
                 // Stop button
                 if viewModel.state != .idle {
-                    Button("Stop") {
+                    Button {
                         viewModel.stopPlaying()
                         print("Stop button pressed")
+                    } label: {
+                        Text("Stop")
+                            .frame(width: 70, height: 70)
                     }
-                    .frame(width: 50, height: 50)
+                    .buttonStyle(.plain)
+                    .background(.blue)
+                    
                 }
             }
-            .frame(width: 120, height: 50)
+            .frame(width: 160, height: 70)
             .offset(y: 60)
         }
     }
