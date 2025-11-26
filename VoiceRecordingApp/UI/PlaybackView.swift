@@ -57,55 +57,60 @@ struct PlaybackView: View {
         ZStack {
             Text("Playback View")
             
-            HStack {
-                // Play/Pause button
-                Button {
-                    switch viewModel.state {
-                    case .idle:
-                        viewModel.playRecording()
-                        
-                    case .playing:
-                        viewModel.pausePlaying()
-                        
-                    case .paused:
-                        viewModel.playRecording()
-                    }
-                    print("Play/Pause pressed")
-                } label: {
-                    Text("\(viewModel.state.rawValue)")
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                .frame(width: 70, height: 70)
-                .buttonStyle(BorderlessButtonStyle())
-                .background(.orange)
-                .contentShape(Rectangle())
-                
-                Spacer()
-                
-                // Stop button
-                if viewModel.state != .idle {
+            VStack {
+                HStack {
+                    // Play/Pause button
                     Button {
-                        viewModel.stopPlaying()
-                        print("Stop button pressed")
+                        switch viewModel.state {
+                        case .idle:
+                            viewModel.playRecording()
+                            
+                        case .playing:
+                            viewModel.pausePlaying()
+                            
+                        case .paused:
+                            viewModel.playRecording()
+                        }
+                        print("Play/Pause pressed")
                     } label: {
-                        Text("Stop")
+                        Text("\(viewModel.state.rawValue)")
                             .foregroundColor(.white)
-                            .frame(width: 70, height: 70)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     .frame(width: 70, height: 70)
                     .buttonStyle(BorderlessButtonStyle())
-                    .background(.blue)
+                    .background(.orange)
                     .contentShape(Rectangle())
                     
-                    // Timer
-                    Text("\(viewModel.playingDuration.formatted)")
-                        .font(.title2)
-                        .frame(width: 100)
+                    Spacer()
+                    
+                    // Stop button
+                    if viewModel.state != .idle {
+                        Button {
+                            viewModel.stopPlaying()
+                            print("Stop button pressed")
+                        } label: {
+                            Text("Stop")
+                                .foregroundColor(.white)
+                                .frame(width: 70, height: 70)
+                        }
+                        .frame(width: 70, height: 70)
+                        .buttonStyle(BorderlessButtonStyle())
+                        .background(.blue)
+                        .contentShape(Rectangle())
+                    }
                 }
+                .frame(width: 160, height: 70)
+                .offset(y: 60)
             }
-            .frame(width: 160, height: 70)
-            .offset(y: 60)
+            
+            // Timer
+            if viewModel.state != .idle {
+                Text("\(viewModel.playingDuration.formatted)")
+                    .font(.title2)
+                    .frame(width: 100)
+                    .offset(y: 120)
+            }
         }
     }
 }
