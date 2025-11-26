@@ -154,9 +154,17 @@ struct MainView: View {
                     
                     if viewModel.state != .idle {
                         HStack {
-                            Button("Stop") {
+                            Button {
                                 viewModel.stopRecord()
+                            } label: {
+                                Text("Stop")
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
+                            .frame(width: 70, height: 50)
+                            .buttonStyle(BorderlessButtonStyle())
+                            .background(.blue)
+                            .contentShape(Rectangle())
                             
                             Text("\(viewModel.duration.formatted)")
                                 .font(.title2)
