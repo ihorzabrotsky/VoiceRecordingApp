@@ -18,6 +18,7 @@ enum PlaybackViewState: String {
 @MainActor
 final class PlaybackViewModel: ObservableObject {
     @Published var state: PlaybackViewState = .idle
+    @Published var playingDuration: TimeInterval = 0
     
     private let playRecordingUseCase = PlayRecordingUseCase()
     private let pausePlayingUseCase = PausePlayingUseCase()
@@ -25,7 +26,7 @@ final class PlaybackViewModel: ObservableObject {
     
     func playRecording() {
         state = .playing
-        playRecordingUseCase.play { [weak self] success in
+        playRecordingUseCase.play( { [weak self] success in
             if !success {
                 // show error
             }
@@ -33,7 +34,10 @@ final class PlaybackViewModel: ObservableObject {
             // Let's change the state independently from success for now
             guard let self = self else { return }
             self.state = .idle
-        }
+        }, { [weak self] duration in
+            guard let self = self else { return }
+            self.playingDuration = duration
+        })
     }
     
     func pausePlaying() {
@@ -93,6 +97,11 @@ struct PlaybackView: View {
                     .buttonStyle(BorderlessButtonStyle())
                     .background(.blue)
                     .contentShape(Rectangle())
+                    
+                    // Timer
+                    Text("\(viewModel.playingDuration.formatted)")
+                        .font(.title2)
+                        .frame(width: 100)
                 }
             }
             .frame(width: 160, height: 70)

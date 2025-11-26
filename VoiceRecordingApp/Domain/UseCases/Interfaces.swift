@@ -7,8 +7,11 @@
 
 import Foundation
 
-protocol AudioRecorder {
+protocol DurationUpdatable {
     typealias DurationUpdater = (TimeInterval) -> Void
+}
+
+protocol AudioRecorder: DurationUpdatable {
     func startRecording(_ onDurationUpdateCompletion: @escaping DurationUpdater) throws
     func pauseRecording()
     // "stopRecording" doesn't reflect the fact that Recording will be returned but this is done atm to save time.
@@ -17,10 +20,10 @@ protocol AudioRecorder {
     var fileUrl: URL? { get }
 }
 
-protocol AudioPlayer {
+protocol AudioPlayer: DurationUpdatable {
     typealias OnStopCompletion = (Bool) -> Void
     
-    func playRecord(_ onStopCompletion: @escaping OnStopCompletion)
+    func playRecord(_ onStopCompletion: @escaping OnStopCompletion, _ onDurationUpdateCompletion: @escaping DurationUpdater)
     func pausePlaying()
     func stopPlaying()
     // TODO: we can work only with Data type for recordings. Would be good to refactor so AudioPlayer and AudioRecorder don't know about URLs at all

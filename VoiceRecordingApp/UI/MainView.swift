@@ -26,14 +26,14 @@ class MainViewModel: ObservableObject {
     @Published var records: [Recording] = []
     @Published var state: MainViewState = .idle
     @Published var selection: UUID? // need this to properly customize List item selection
-    @Published var duration: TimeInterval = 0
+    @Published var recordingDuration: TimeInterval = 0
     
     func recordAudio() {
         state = .recording
         do {
             try recordAudioUseCase.recordAudio { [weak self] newDuration in
                 guard let self = self else { return }
-                self.duration = newDuration
+                self.recordingDuration = newDuration
             }
         } catch {
             print("❌❌❌ \(Self.self): audio recording failed: \(error)")
@@ -166,7 +166,7 @@ struct MainView: View {
                             .background(.blue)
                             .contentShape(Rectangle())
                             
-                            Text("\(viewModel.duration.formatted)")
+                            Text("\(viewModel.recordingDuration.formatted)")
                                 .font(.title2)
                                 .frame(width: 100)
                         }

@@ -16,11 +16,16 @@ final class AudioPlayerImpl: NSObject, AudioPlayer {
     static let shared = AudioPlayerImpl() // TODO: This shouldn't be Singleton. Need proper DI. Left for now.
     var activeRecordingUrl: URL?
     
+    private var timer: Timer?
+    private let timeInterval: TimeInterval = 0.01
+    
+    private var onDurationUpdateCompletion: DurationUpdater?
+    
     // MARK: - AudioPlayer
     
     // TODO: Formally, this method should also throw. Left for now
     // TODO: AVAudioPlayer.play() method returns Bool for success so it would be good to refactor appropriately.
-    func playRecord(_ onStopCompletion: @escaping OnStopCompletion) {
+    func playRecord(_ onStopCompletion: @escaping OnStopCompletion, _ onDurationUpdateCompletion: @escaping DurationUpdater) {
         guard !isPaused else {
             isPaused = false
             player?.play()
@@ -44,6 +49,13 @@ final class AudioPlayerImpl: NSObject, AudioPlayer {
             print("⚠️⚠️⚠️ Audio file's duration: \(duration)")
             self.onStopCompletion = onStopCompletion
             player?.prepareToPlay()
+            self.onDurationUpdateCompletion = onDurationUpdateCompletion
+            timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: { [weak self] timer in
+                guard let self = self,
+                      let duration = self.player?.currentTime else { return }
+                self.onDurationUpdateCompletion?(duration)
+            })
+            
             player?.play()
         } catch {
             print("❌❌❌ Player creation failed: \(error)")
@@ -63,6 +75,7 @@ final class AudioPlayerImpl: NSObject, AudioPlayer {
         player = nil
         onStopCompletion?(true)
         onStopCompletion = nil
+        onDurationUpdateCompletion = nil
     }
     
     func setActiveRecordingURL(_ url: URL) {
@@ -78,5 +91,6 @@ extension AudioPlayerImpl: AVAudioPlayerDelegate {
         print("✅✅✅ AVAudioPlayer finished playing successfully.")
         onStopCompletion?(flag)
         onStopCompletion = nil
+        onDurationUpdateCompletion = nil
     }
 }
