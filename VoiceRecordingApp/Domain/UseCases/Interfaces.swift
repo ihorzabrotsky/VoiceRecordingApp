@@ -8,7 +8,8 @@
 import Foundation
 
 protocol AudioRecorder {
-    func startRecording() throws
+    typealias DurationUpdater = (TimeInterval) -> Void
+    func startRecording(_ onDurationUpdateCompletion: @escaping DurationUpdater) throws
     func pauseRecording()
     // "stopRecording" doesn't reflect the fact that Recording will be returned but this is done atm to save time.
     func stopRecording() throws -> Recording

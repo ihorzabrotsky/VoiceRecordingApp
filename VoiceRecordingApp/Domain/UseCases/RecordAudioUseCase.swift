@@ -11,7 +11,7 @@ struct RecordAudioUseCase {
     
     private let audioRecorder: AudioRecorder? = AudioRecorderImpl1.shared // TODO: inject
     
-    func recordAudio() throws {
-        try audioRecorder?.startRecording()
+    func recordAudio(_ onDurationUpdate: @escaping AudioRecorder.DurationUpdater) throws {
+        try audioRecorder?.startRecording(onDurationUpdate)
     }
 }

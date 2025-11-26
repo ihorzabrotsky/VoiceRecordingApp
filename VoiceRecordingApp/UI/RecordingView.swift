@@ -28,15 +28,15 @@ class RecordingViewModel: ObservableObject {
     }
     
     func startRecord() {
-        do {
-            try recordAudioUseCase.recordAudio()
-            state = .recording
-            
-            // start recording timer
-            // show Stop button
-        } catch {
-            print("❌ Audio recording hasn't started.")
-        }
+//        do {
+//            try recordAudioUseCase.recordAudio()
+//            state = .recording
+//            
+//            // start recording timer
+//            // show Stop button
+//        } catch {
+//            print("❌ Audio recording hasn't started.")
+//        }
     }
     
     func pauseRecord() {

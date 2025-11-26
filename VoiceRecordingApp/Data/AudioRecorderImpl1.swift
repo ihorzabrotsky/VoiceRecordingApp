@@ -21,12 +21,15 @@ class AudioRecorderImpl1: AudioRecorder {
     private var isPaused: Bool = false
     private var audioRecordingID: UUID?
     
-    func startRecording() throws {
+    private var timer: Timer?
+    private let timeInterval: TimeInterval = 0.01
+    
+    func startRecording(_ onDurationUpdateCompletion: @escaping DurationUpdater) throws {
         let status = AVCaptureDevice.authorizationStatus(for: .audio)
         switch status {
         case .authorized:
             print("✅✅✅ Permission granted. Record starting...")
-            try startRecord()
+            try startRecord(onDurationUpdateCompletion)
             
         case .denied, .restricted:
             print("❌❌❌ Access denied. Please, grant access in settings")
@@ -43,7 +46,7 @@ class AudioRecorderImpl1: AudioRecorder {
                 Task {
                     // We're in a scope of closure that's run on background so we need to start recording on main thread - demand of AVAudioRecorder
                     try await MainActor.run { // MainActor.run(...) rethrows
-                        try self.startRecord()
+                        try self.startRecord(onDurationUpdateCompletion)
                     }
                 }
             }
@@ -59,13 +62,16 @@ class AudioRecorderImpl1: AudioRecorder {
     }
     
     func stopRecording() throws -> Recording {
+        timer?.invalidate()
+        timer = nil
+        
         // Duration can be correctly obtained only before AVAudioRecorder().stop()
         guard let duration = audioRecorder?.currentTime,
               let id = audioRecordingID else {
             audioRecorder?.stop()
             throw AudioRecorderError.recordingFailed
         }
-               
+        
         audioRecorder?.stop()
         audioRecorder = nil
         audioRecordingID = nil
@@ -77,7 +83,7 @@ class AudioRecorderImpl1: AudioRecorder {
     
     // MARK: - Private
     
-    private func startRecord() throws {
+    private func startRecord(_ onDurationUpdateCompletion: @escaping DurationUpdater) throws {
         guard !isPaused else {
             audioRecorder?.record()
             isPaused = false;
@@ -104,7 +110,12 @@ class AudioRecorderImpl1: AudioRecorder {
             audioRecorder = try AVAudioRecorder(url: fileUrl, settings: settings)
             audioRecorder?.prepareToRecord()
             audioRecorder?.record()
+            timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: { [weak self] timer in
+                guard let self = self else { return }
+                onDurationUpdateCompletion(self.audioRecorder?.currentTime ?? 0)
+            })
             print("✅✅✅ Recording started...")
+            
         } catch {
             print("❌❌❌ Audio Recorder couldn't initialize: \(error)")
         }
