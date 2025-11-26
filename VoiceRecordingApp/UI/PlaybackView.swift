@@ -69,11 +69,14 @@ struct PlaybackView: View {
                     print("Play/Pause pressed")
                 } label: {
                     Text("\(viewModel.state.rawValue)")
-                        .frame(width: 70, height: 70)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .buttonStyle(.plain)
-                .background(.yellow)
-                                
+                .frame(width: 70, height: 70)
+                .buttonStyle(BorderlessButtonStyle())
+                .background(.orange)
+                .contentShape(Rectangle())
+                
                 Spacer()
                 
                 // Stop button
@@ -83,11 +86,13 @@ struct PlaybackView: View {
                         print("Stop button pressed")
                     } label: {
                         Text("Stop")
+                            .foregroundColor(.white)
                             .frame(width: 70, height: 70)
                     }
-                    .buttonStyle(.plain)
+                    .frame(width: 70, height: 70)
+                    .buttonStyle(BorderlessButtonStyle())
                     .background(.blue)
-                    
+                    .contentShape(Rectangle())
                 }
             }
             .frame(width: 160, height: 70)
