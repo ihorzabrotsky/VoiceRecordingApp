@@ -19,6 +19,7 @@ VoiceRecordingApp - small macOS app for voice recording.
 - MainView is a bit overwhelmed and must be split into several separate views: List, RecordingView, PlaybackView
 - Timers are added to RunLoop.main
 - When some flow is activated, e. g., Recording or Playing other UI elements, like List, aren't blocked or hidden so User has to finish the flow and only after that the correct work is guaranteed. These edge cases where not implemented and tested.
+- When recording audio FileManager is directly used to create URL to a file in AudioRecorderImpl1. This shouldn't be the case - only Repository must know how to save the file.
 
 ## Technical configuration
 - macOS 12.7.6
